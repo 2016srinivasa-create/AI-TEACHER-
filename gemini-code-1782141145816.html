@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geetha's Free Robo Teaching</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --bg: #f5f6fa;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: #333; display: flex; flex-direction: column; height: 100vh; }
+        
+        header { background: var(--primary); color: white; padding: 15px 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header h1 { font-size: 24px; letter-spacing: 1px; }
+        
+        .main-container { display: flex; flex: 1; overflow: hidden; padding: 20px; gap: 20px; }
+        
+        /* Left Panel: Inputs */
+        .input-panel { width: 300px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-weight: 600; font-size: 13px; color: #555; }
+        .input-group select, .input-group input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .start-btn { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; transition: 0.2s; }
+        .start-btn:hover { background: #219653; }
+
+        /* Center Classroom Area */
+        .classroom { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        
+        /* Whiteboard & Teacher Section */
+        .stage { display: flex; flex: 1; gap: 20px; min-height: 400px; }
+        
+        .whiteboard-container { flex: 2; background: #fff; border: 12px solid #5d4037; border-radius: 8px; box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1); position: relative; display: flex; flex-direction: column; padding: 25px; }
+        .whiteboard-header { font-size: 14px; color: #7f8c8d; border-bottom: 1px dashed #ddd; padding-bottom: 5px; margin-bottom: 15px; font-weight: bold; }
+        .whiteboard-content { font-size: 18px; line-height: 1.6; color: #111; font-family: 'Courier New', Courier, monospace; white-space: pre-line; flex: 1; }
+        
+        .teacher-space { flex: 1; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; pading: 15px; position: relative; overflow: hidden; background: #eaeaea; border: 2px solid #ddd; }
+        .teacher-img { width: 100%; height: 100%; object-fit: cover; }
+        .teacher-fallback { text-align: center; color: #777; padding: 20px; position: absolute; }
+        .teacher-status { position: absolute; bottom: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+
+        /* Interaction Panel */
+        .interaction-panel { background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; }
+        .doubt-input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
+        .action-btn { padding: 12px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: 0.2s; }
+        .mic-btn { background: #e74c3c; color: white; }
+        .mic-btn.active { background: #ff2e1b; animation: pulse 1.5s infinite; }
+        .send-btn { background: var(--primary); color: white; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>GEETHA'S FREE ROBO TEACHING</h1>
+    </header>
+
+    <div class="main-container">
+        <!-- Setup Panel -->
+        <div class="input-panel">
+            <h3 style="margin-bottom: 10px; color: var(--primary);">Classroom Setup</h3>
+            <div class="input-group">
+                <label>Grade / Level</label>
+                <select id="grade">
+                    <option>Class 6 to 9</option>
+                    <option selected>Class 10</option>
+                    <option>Class 11</option>
+                    <option>Class 12</option>
+                    <option>College Student</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Syllabus / Board</label>
+                <select id="board">
+                    <option selected>CBSE</option>
+                    <option>ICSE</option>
+                    <option>State Board</option>
+                    <option>University / Higher Ed</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Subject</label>
+                <input type="text" id="subject" value="Mathematics">
+            </div>
+            <div class="input-group">
+                <label>Textbook Name</label>
+                <input type="text" id="textbook" value="NCERT Exemplar">
+            </div>
+            <div class="input-group">
+                <label>Page Number</label>
+                <input type="text" id="page" value="42">
+            </div>
+            <div class="input-group">
+                <label>Question / Topic Number</label>
+                <input type="text" id="question" value="Question 5">
+            </div>
+            <button class="start-btn" onclick="startLesson()">Start Teaching</button>
+        </div>
+
+        <!-- Main Classroom Display -->
+        <div class="classroom">
+            <div class="stage">
+                <!-- Neat Whiteboard -->
+                <div class="whiteboard-container">
+                    <div class="whiteboard-header" id="board-header">Whiteboard ready...</div>
+                    <div class="whiteboard-content" id="board-text">Click "Start Teaching" to begin the lesson with Teacher Geetha.</div>
+                </div>
+                
+                <!-- Teacher Area -->
+                <div class="teacher-space">
+                    <!-- Replace the src URL below with your real lady photo link when ready -->
+                    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=500" alt="Teacher Geetha" class="teacher-img">
+                    <div class="teacher-status" id="teacher-status">Status: Waiting</div>
+                </div>
+            </div>
+
+            <!-- Student Doubt Clarification Area -->
+            <div class="interaction-panel">
+                <input type="text" id="doubt-text" class="doubt-input" placeholder="Type your doubt here or use the Mic...">
+                <button class="action-btn mic-btn" id="mic-btn" onclick="toggleMic()">🎤 Speak Doubt</button>
+                <button class="action-btn send-btn" onclick="askDoubt()">Ask Teacher</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let typingInterval;
+        let isPaused = false;
+        let dynamicText = "";
+        let currentIndex = 0;
+
+        function startLesson() {
+            clearInterval(typingInterval);
+            isPaused = false;
+            document.getElementById("teacher-status").innerText = "Status: Teaching...";
+            document.getElementById("teacher-status").style.background = "#27ae60";
+            
+            const grade = document.getElementById("grade").value;
+            const board = document.getElementById("board").value;
+            const subject = document.getElementById("subject").value;
+            const book = document.getElementById("textbook").value;
+            const page = document.getElementById("page").value;
+            const q = document.getElementById("question").value;
+
+            document.getElementById("board-header").innerText = `${board} | ${grade} | ${subject} (Page ${page}, ${q})`;
+            
+            dynamicText = `Welcome students! I am Geetha.\nToday we are analyzing ${q} from your ${book} textbook.\n\nLet's write down the given data:\nStep 1: Identify formulas required.\nStep 2: Substitute values step-by-step.\nStep 3: Simplify variables to arrive at final calculation...\n\n(Writing out fully onto whiteboard...)`;
+            
+            currentIndex = 0;
+            document.getElementById("board-text").innerText = "";
+            
+            runWhiteboardWriter();
+        }
+
+        function runWhiteboardWriter() {
+            typingInterval = setInterval(() => {
+                if (!isPaused) {
+                    if (currentIndex < dynamicText.length) {
+                        document.getElementById("board-text").innerText += dynamicText[currentIndex];
+                        currentIndex++;
+                    } else {
+                        clearInterval(typingInterval);
+                        document.getElementById("teacher-status").innerText = "Status: Lesson Finished";
+                    }
+                }
+            }, 50);
+        }
+
+        function askDoubt() {
+            const doubt = document.getElementById("doubt-text").value;
+            if (!doubt) return;
+
+            // Pause presentation immediately
+            isPaused = true;
+            document.getElementById("teacher-status").innerText = "Status: Clarifying Doubt 🛑";
+            document.getElementById("teacher-status").style.background = "#e74c3c";
+
+            // Put clarification right on the board
+            const originalBoardContent = document.getElementById("board-text").innerText;
+            document.getElementById("board-text").innerText = originalBoardContent + 
+                `\n\n[🛑 LESSON PAUSED FOR STUDENT DOUBT]\nStudent asked: "${doubt}"\n\nTeacher Geetha Explains: Excellent question! Let me break that down cleanly right here. Don't worry, we won't proceed until this is clear...`;
+            
+            document.getElementById("doubt-text").value = "";
+        }
+
+        // Voice Microphone Sim
+        function toggleMic() {
+            const micBtn = document.getElementById("mic-btn");
+            if (micBtn.classList.contains("active")) {
+                micBtn.classList.remove("active");
+                micBtn.innerHTML = "🎤 Speak Doubt";
+                document.getElementById("doubt-text").value = "How did you get Step 2 from the formula?";
+                askDoubt();
+            } else {
+                micBtn.classList.add("active");
+                micBtn.innerHTML = "🛑 Listening...";
+            }
+        }
+    </script>
+</body>
+</html>
